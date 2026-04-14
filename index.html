@@ -3,184 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Конструктор - Слайд 2</title>
+    <title>Презентация для Димы</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #222;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            font-family: sans-serif;
+        body { 
+            margin: 0; 
+            background-color: #000; /* Черный фон вокруг презентации */
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            overflow: hidden; 
         }
-
-        #slide-container {
-            position: relative;
-            aspect-ratio: 16 / 9;
-            max-width: 100vw;
-            max-height: 100vh;
-            background-color: #000;
-        }
-
-        #slide-image {
+        
+        /* Экран презентации (всегда пропорция 16:9) */
+        #presentation-screen { 
+            position: relative; 
+            aspect-ratio: 16/9; 
+            max-width: 100vw; 
+            max-height: 100vh; 
             width: 100%;
-            height: 100%;
-            display: block;
         }
 
-        /* --- СТИЛИ ДЛЯ РЕЖИМА РЕДАКТИРОВАНИЯ --- */
-        .edit-box {
+        /* Настройки для каждого слайда */
+        .slide {
             position: absolute;
-            resize: both;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-weight: bold;
-            color: white;
-            cursor: move;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: none; /* Скрываем все слайды */
+        }
+        
+        /* Показываем только тот слайд, который сейчас активен */
+        .slide.active {
+            display: block; 
+        }
+
+        .slide img { 
+            width: 100%; 
+            height: 100%; 
+            display: block; 
+        }
+
+        /* Невидимая кнопка перехода */
+        .invisible-btn {
+            position: absolute;
             z-index: 10;
-            box-sizing: border-box;
-        }
-
-        /* Зона кнопки (оранжевая) */
-        #click-zone {
-            background: rgba(255, 100, 0, 0.5);
-            border: 2px dashed #ff6600;
-            left: 10%; top: 10%; width: 20%; height: 20%;
-        }
-
-        /* Зона видео (синяя) */
-        #video-zone {
-            background: rgba(0, 150, 255, 0.5);
-            border: 2px dashed #0096ff;
-            left: 40%; top: 10%; width: 35%; height: 35%;
-        }
-
-        /* Инструкция поверх экрана */
-        #instructions {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.85);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            z-index: 100;
-            border: 1px solid #777;
+            cursor: pointer;
+            /* Если захотите увидеть, где находятся кнопки, уберите слэши и звездочки в строке ниже: */
+            /* background: rgba(255, 0, 0, 0.3); border: 2px solid red; */
         }
     </style>
 </head>
 <body>
-
-    <div id="instructions">
-        <h3 style="margin-top:0; color: #fff;">Режим редактирования (Слайд 2)</h3>
-        <p style="margin-bottom:0;">
-           1. <b>Растяните</b> зоны за правый нижний угол.<br>
-           2. <b>Перетащите</b> их на нужные места.<br>
-           3. Нажмите <b>Enter</b>, чтобы получить код для f2.html!
-        </p>
-    </div>
-
-    <div id="slide-container">
-        <img id="slide-image" src="f2.jpg" alt="Слайд 2" onerror="this.src='https://via.placeholder.com/1920x1080?text=Тут+будет+f2.jpg'">
-
-        <div id="click-zone" class="edit-box draggable">
-            Переход<br>на f3.html
+    <div id="presentation-screen">
+        
+        <div id="slide1" class="slide active">
+            <img src="f1.jpg" alt="Слайд 1">
+            
+            <div class="invisible-btn" onclick="goToSlide(2)" style="left: 42.93%; top: 87.70%; width: 19.98%; height: 20.00%;"></div>
         </div>
 
-        <div id="video-zone" class="edit-box draggable">
-            Зона для видео<br>1 (2).mp4
+        <div id="slide2" class="slide">
+            <img src="f2.jpg" alt="Слайд 2" onerror="this.src='https://via.placeholder.com/1920x1080?text=Картинка+f2.jpg'">
+            
+            <video id="vid1" src="1 (2).mp4" controls style="position: absolute; left: 30%; top: 20%; width: 40%; height: 50%; z-index: 5; object-fit: cover; background: #000;"></video>
+            
+            <div class="invisible-btn" onclick="goToSlide(3)" style="left: 75%; top: 80%; width: 20%; height: 10%;"></div>
         </div>
+
+        <div id="slide3" class="slide">
+            <img src="f3.jpg" alt="Слайд 3" onerror="this.src='https://via.placeholder.com/1920x1080?text=Картинка+f3.jpg'">
+            </div>
+
     </div>
 
     <script>
-        let draggedElement = null;
-        let offsetX = 0, offsetY = 0;
-
-        document.querySelectorAll('.draggable').forEach(elem => {
-            elem.addEventListener('mousedown', (e) => {
-                let rect = elem.getBoundingClientRect();
-                // Блокируем перетаскивание, если тянем за правый нижний угол (resize)
-                if (e.clientX > rect.right - 20 && e.clientY > rect.bottom - 20) return;
-
-                draggedElement = elem;
-                offsetX = e.clientX - elem.getBoundingClientRect().left;
-                offsetY = e.clientY - elem.getBoundingClientRect().top;
-                elem.style.cursor = 'grabbing';
+        function goToSlide(slideNumber) {
+            // 1. Прячем все слайды
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
             });
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!draggedElement) return;
-            const container = document.getElementById('slide-container').getBoundingClientRect();
             
-            let newLeft = e.clientX - container.left - offsetX;
-            let newTop = e.clientY - container.top - offsetY;
-
-            draggedElement.style.left = newLeft + 'px';
-            draggedElement.style.top = newTop + 'px';
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (draggedElement) {
-                draggedElement.style.cursor = 'move';
-                draggedElement = null;
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const container = document.getElementById('slide-container');
-                const cWidth = container.offsetWidth;
-                const cHeight = container.offsetHeight;
-                
-                const clickZone = document.getElementById('click-zone');
-                const videoZone = document.getElementById('video-zone');
-
-                const getPercents = (el) => {
-                    return {
-                        left: ((el.offsetLeft / cWidth) * 100).toFixed(2),
-                        top: ((el.offsetTop / cHeight) * 100).toFixed(2),
-                        width: ((el.offsetWidth / cWidth) * 100).toFixed(2),
-                        height: ((el.offsetHeight / cHeight) * 100).toFixed(2)
-                    };
-                };
-
-                let cParams = getPercents(clickZone);
-                let vParams = getPercents(videoZone);
-
-                // Генерация финального кода для f2.html
-                let finalHtml = `<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Презентация - Слайд 2</title>
-    <style>
-        body { margin: 0; background-color: #000; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        #slide-container { position: relative; aspect-ratio: 16/9; max-width: 100vw; max-height: 100vh; }
-        #slide-container img { width: 100%; height: 100%; display: block; }
-    </style>
-</head>
-<body>
-    <div id="slide-container">
-        <img src="f2.jpg" alt="Слайд 2">
-        
-        <a href="f3.html" style="position: absolute; left: ${cParams.left}%; top: ${cParams.top}%; width: ${cParams.width}%; height: ${cParams.height}%; z-index: 10; cursor: pointer;"></a>
-        
-        <video src="1 (2).mp4" controls style="position: absolute; left: ${vParams.left}%; top: ${vParams.top}%; width: ${vParams.width}%; height: ${vParams.height}%; z-index: 5; object-fit: cover; background: #000;"></video>
-    </div>
-</body>
-</html>`;
-
-                prompt("Готово! Скопируйте этот код и сохраните его в файл f2.html:", finalHtml);
-            }
-        });
+            // 2. Показываем нужный слайд
+            document.getElementById('slide' + slideNumber).classList.add('active');
+            
+            // 3. Выключаем видео, если оно играло на прошлом слайде (чтобы звук не шел фоном)
+            document.querySelectorAll('video').forEach(video => {
+                video.pause();
+            });
+        }
     </script>
 </body>
 </html>
