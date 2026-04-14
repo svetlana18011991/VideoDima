@@ -46,7 +46,6 @@
         }
 
         /* === СПАСИТЕЛЬНОЕ ПРАВИЛО ДЛЯ ПОЛНОЭКРАННОГО РЕЖИМА === */
-        /* Возвращает оригинальные пропорции с черными полосами */
         video:fullscreen {
             object-fit: contain !important;
             background-color: #000 !important;
@@ -86,8 +85,16 @@
         </div>
 
         <div id="slide4" class="slide">
-            <img src="f4.jpg" alt="Слайд 4" onerror="this.src='https://via.placeholder.com/1920x1080?text=Тут+будет+f4.jpg'">
+            <img src="f4.jpg" alt="Слайд 4" onerror="this.src='https://via.placeholder.com/1920x1080?text=Картинка+f4.jpg'">
+            
+            <video id="vid3" src="3.mp4" controls style="position: absolute; left: 17.5%; top: 11%; width: 28.5%; height: 69%; z-index: 5; object-fit: cover; border-radius: 4px; background: transparent;"></video>
+            
+            <div class="invisible-btn" onclick="goToSlide(5)" style="left: 39%; top: 85%; width: 22%; height: 10%;"></div>
         </div>
+
+        <div id="slide5" class="slide">
+            <img src="f5.jpg" alt="Слайд 5" onerror="this.src='https://via.placeholder.com/1920x1080?text=Тут+будет+f5.jpg'">
+            </div>
 
     </div>
 
