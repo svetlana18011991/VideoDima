@@ -17,10 +17,10 @@
             font-family: sans-serif;
         }
 
-        /* Контейнер для слайда, чтобы всё масштабировалось вместе */
+        /* Контейнер для слайда */
         #slide-container {
             position: relative;
-            width: 1000px; /* Ширина вашей презентации */
+            width: 1000px;
             max-width: 100%;
             background-color: #000;
         }
@@ -33,7 +33,7 @@
         /* --- СТИЛИ ДЛЯ РЕЖИМА РЕДАКТИРОВАНИЯ --- */
         .edit-box {
             position: absolute;
-            resize: both; /* Позволяет растягивать блок за правый нижний угол */
+            resize: both; /* Растягивание за правый нижний угол */
             overflow: hidden;
             display: flex;
             justify-content: center;
@@ -49,12 +49,6 @@
             background: rgba(255, 0, 0, 0.4);
             border: 2px dashed red;
             left: 50px; top: 50px; width: 200px; height: 100px;
-        }
-
-        #video-zone {
-            background: rgba(0, 150, 255, 0.4);
-            border: 2px dashed #0096ff;
-            left: 300px; top: 50px; width: 320px; height: 180px;
         }
 
         /* Инструкция поверх экрана */
@@ -73,31 +67,27 @@
 
     <div id="instructions">
         <h3>Режим редактирования</h3>
-        <p>1. <b>Растяните</b> блоки за правый нижний угол.<br>
-           2. <b>Перетащите</b> блоки в нужное место (зажмите левую кнопку мыши).<br>
-           3. Нажмите <b>Enter</b>, чтобы получить готовые координаты!</p>
+        <p>1. <b>Растяните</b> красную зону за правый нижний угол.<br>
+           2. <b>Перетащите</b> её на то место, куда нужно кликнуть.<br>
+           3. Нажмите <b>Enter</b>, чтобы получить готовый код!</p>
     </div>
 
     <div id="slide-container">
-        <img id="slide-image" src="background.jpg" alt="Фон слайда" onerror="this.src='https://via.placeholder.com/1000x562?text=Ваша+картинка+здесь'">
+        <img id="slide-image" src="f1.jpg" alt="Слайд 1" onerror="this.src='https://via.placeholder.com/1000x562?text=Тут+будет+f1.jpg'">
 
         <div id="click-zone" class="edit-box draggable">
-            Зона клика<br>(Тяни за угол)
-        </div>
-
-        <div id="video-zone" class="edit-box draggable">
-            Видео<br>(Тяни за угол)
+            Зона перехода<br>на f2.html<br>(Тяни за угол)
         </div>
     </div>
 
     <script>
-        // Простой скрипт для перетаскивания элементов
+        // Скрипт для перетаскивания
         let draggedElement = null;
         let offsetX = 0, offsetY = 0;
 
         document.querySelectorAll('.draggable').forEach(elem => {
             elem.addEventListener('mousedown', (e) => {
-                // Если кликнули в правый нижний угол (зона растягивания), не запускаем перетаскивание
+                // Если кликнули в правый нижний угол (зона растягивания), не перетаскиваем
                 let rect = elem.getBoundingClientRect();
                 if (e.clientX > rect.right - 20 && e.clientY > rect.bottom - 20) return;
 
@@ -112,7 +102,7 @@
             if (!draggedElement) return;
             const container = document.getElementById('slide-container').getBoundingClientRect();
             
-            // Вычисляем новые координаты относительно контейнера
+            // Вычисляем новые координаты
             let newLeft = e.clientX - container.left - offsetX;
             let newTop = e.clientY - container.top - offsetY;
 
@@ -135,9 +125,8 @@
                 const cHeight = container.offsetHeight;
 
                 const clickZone = document.getElementById('click-zone');
-                const videoZone = document.getElementById('video-zone');
 
-                // Переводим пиксели в проценты, чтобы всё корректно работало на любых экранах!
+                // Переводим пиксели в проценты для адаптивности
                 const getPercents = (el) => {
                     return {
                         left: ((el.offsetLeft / cWidth) * 100).toFixed(2),
@@ -148,17 +137,14 @@
                 };
 
                 let cParams = getPercents(clickZone);
-                let vParams = getPercents(videoZone);
 
                 let finalHtml = `<div style="position: relative; width: 100%; max-width: 1000px;">
-    <img src="ваша_картинка.jpg" style="width: 100%; display: block;">
+    <img src="f1.jpg" style="width: 100%; display: block;">
     
-    <a href="slide2.html" style="position: absolute; left: ${cParams.left}%; top: ${cParams.top}%; width: ${cParams.width}%; height: ${cParams.height}%; z-index: 10;"></a>
-
-    <video src="1 (2).mp4" controls style="position: absolute; left: ${vParams.left}%; top: ${vParams.top}%; width: ${vParams.width}%; height: ${vParams.height}%; object-fit: cover;"></video>
+    <a href="f2.html" style="position: absolute; left: ${cParams.left}%; top: ${cParams.top}%; width: ${cParams.width}%; height: ${cParams.height}%; z-index: 10; cursor: pointer;"></a>
 </div>`;
 
-                prompt("Готово! Скопируйте этот код и используйте его для финальной версии:", finalHtml);
+                prompt("Готово! Скопируйте этот код для финальной версии вашего первого слайда:", finalHtml);
             }
         });
     </script>
