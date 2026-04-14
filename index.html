@@ -7,7 +7,7 @@
     <style>
         body { 
             margin: 0; 
-            background-color: #000; /* Черный фон вокруг презентации */
+            background-color: #000; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
@@ -15,7 +15,6 @@
             overflow: hidden; 
         }
         
-        /* Экран презентации (всегда пропорция 16:9) */
         #presentation-screen { 
             position: relative; 
             aspect-ratio: 16/9; 
@@ -24,14 +23,12 @@
             width: 100%;
         }
 
-        /* Настройки для каждого слайда */
         .slide {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            display: none; /* Скрываем все слайды */
+            display: none; 
         }
         
-        /* Показываем только тот слайд, который сейчас активен */
         .slide.active {
             display: block; 
         }
@@ -42,7 +39,6 @@
             display: block; 
         }
 
-        /* Невидимая кнопка перехода */
         .invisible-btn {
             position: absolute;
             z-index: 10;
@@ -55,35 +51,31 @@
         
         <div id="slide1" class="slide active">
             <img src="f1.jpg" alt="Слайд 1">
-            
             <div class="invisible-btn" onclick="goToSlide(2)" style="left: 42.93%; top: 87.70%; width: 19.98%; height: 20.00%;"></div>
         </div>
 
         <div id="slide2" class="slide">
             <img src="f2.jpg" alt="Слайд 2">
             
-            <video id="vid1" src="1 (2).mp4" controls style="position: absolute; left: 18%; top: 17.5%; width: 28%; height: 60.5%; z-index: 5; object-fit: cover; border-radius: 4px; background: transparent;"></video>
+            <video id="vid1" src="1 (2).mp4" controls style="position: absolute; left: 18%; top: 12.5%; width: 28%; height: 67%; z-index: 5; object-fit: cover; border-radius: 4px; background: transparent;"></video>
             
             <div class="invisible-btn" onclick="goToSlide(3)" style="left: 39%; top: 85%; width: 22%; height: 10%;"></div>
         </div>
 
         <div id="slide3" class="slide">
             <img src="f3.jpg" alt="Слайд 3" onerror="this.src='https://via.placeholder.com/1920x1080?text=Картинка+f3.jpg'">
-            </div>
+        </div>
 
     </div>
 
     <script>
         function goToSlide(slideNumber) {
-            // 1. Прячем все слайды
             document.querySelectorAll('.slide').forEach(slide => {
                 slide.classList.remove('active');
             });
             
-            // 2. Показываем нужный слайд
             document.getElementById('slide' + slideNumber).classList.add('active');
             
-            // 3. Выключаем видео, если оно играло на прошлом слайде (чтобы звук не шел фоном)
             document.querySelectorAll('video').forEach(video => {
                 video.pause();
             });
