@@ -93,19 +93,30 @@
         </div>
 
         <div id="slide5" class="slide">
-            <img src="f5.jpg" alt="Слайд 5" onerror="this.src='https://via.placeholder.com/1920x1080?text=Тут+будет+f5.jpg'">
+            <img src="f5.jpg" alt="Слайд 5" onerror="this.src='https://via.placeholder.com/1920x1080?text=Картинка+f5.jpg'">
+            
+            <video id="vid4" src="4.mp4" controls style="position: absolute; left: 54%; top: 11%; width: 28.5%; height: 69%; z-index: 5; object-fit: cover; border-radius: 4px; background: transparent;"></video>
+            
+            <div class="invisible-btn" onclick="goToSlide(6)" style="left: 39%; top: 85%; width: 22%; height: 10%;"></div>
+        </div>
+
+        <div id="slide6" class="slide">
+            <img src="f6.jpg" alt="Слайд 6" onerror="this.src='https://via.placeholder.com/1920x1080?text=ФИНАЛ+f6.jpg'">
             </div>
 
     </div>
 
     <script>
         function goToSlide(slideNumber) {
+            // Прячем все слайды
             document.querySelectorAll('.slide').forEach(slide => {
                 slide.classList.remove('active');
             });
             
+            // Показываем нужный слайд
             document.getElementById('slide' + slideNumber).classList.add('active');
             
+            // Выключаем видео, чтобы звук не шел фоном
             document.querySelectorAll('video').forEach(video => {
                 video.pause();
             });
