@@ -44,6 +44,21 @@
             z-index: 10;
             cursor: pointer;
         }
+
+        /* === СПАСИТЕЛЬНОЕ ПРАВИЛО ДЛЯ ПОЛНОЭКРАННОГО РЕЖИМА === */
+        /* Возвращает оригинальные пропорции с черными полосами */
+        video:fullscreen {
+            object-fit: contain !important;
+            background-color: #000 !important;
+        }
+        video:-webkit-full-screen {
+            object-fit: contain !important;
+            background-color: #000 !important;
+        }
+        video:-moz-full-screen {
+            object-fit: contain !important;
+            background-color: #000 !important;
+        }
     </style>
 </head>
 <body>
