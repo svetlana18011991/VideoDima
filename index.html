@@ -1,1 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Презентация для Димы</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            font-family: sans-serif;
+        }
 
+        /* Контейнер для слайда, чтобы всё масштабировалось вместе */
+        #slide-container {
+            position: relative;
+            width: 1000px; /* Ширина вашей презентации */
+            max-width: 100%;
+            background-color: #000;
+        }
+
+        #slide-image {
+            width: 100%;
+            display: block;
+        }
+
+        /* --- СТИЛИ ДЛЯ РЕЖИМА РЕДАКТИРОВАНИЯ --- */
+        .edit-box {
+            position: absolute;
+            resize: both; /* Позволяет растягивать блок за правый нижний угол */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-weight: bold;
+            cursor: move;
+            z-index: 10;
+            box-sizing: border-box;
+        }
+
+        #click-zone {
+            background: rgba(255, 0, 0, 0.4);
+            border: 2px dashed red;
+            left: 50px; top: 50px; width: 200px; height: 100px;
+        }
+
+        #video-zone {
+            background: rgba(0, 150, 255, 0.4);
+            border: 2px dashed #0096ff;
+            left: 300px; top: 50px; width: 320px; height: 180px;
+        }
+
+        /* Инструкция поверх экрана */
+        #instructions {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="instructions">
+        <h3>Режим редактирования</h3>
+        <p>1. <b>Растяните</b> блоки за правый нижний угол.<br>
+           2. <b>Перетащите</b> блоки в нужное место (зажмите левую кнопку мыши).<br>
+           3. Нажмите <b>Enter</b>, чтобы получить готовые координаты!</p>
+    </div>
+
+    <div id="slide-container">
+        <img id="slide-image" src="background.jpg" alt="Фон слайда" onerror="this.src='https://via.placeholder.com/1000x562?text=Ваша+картинка+здесь'">
+
+        <div id="click-zone" class="edit-box draggable">
+            Зона клика<br>(Тяни за угол)
+        </div>
+
+        <div id="video-zone" class="edit-box draggable">
+            Видео<br>(Тяни за угол)
+        </div>
+    </div>
+
+    <script>
+        // Простой скрипт для перетаскивания элементов
+        let draggedElement = null;
+        let offsetX = 0, offsetY = 0;
+
+        document.querySelectorAll('.draggable').forEach(elem => {
+            elem.addEventListener('mousedown', (e) => {
+                // Если кликнули в правый нижний угол (зона растягивания), не запускаем перетаскивание
+                let rect = elem.getBoundingClientRect();
+                if (e.clientX > rect.right - 20 && e.clientY > rect.bottom - 20) return;
+
+                draggedElement = elem;
+                offsetX = e.clientX - elem.getBoundingClientRect().left;
+                offsetY = e.clientY - elem.getBoundingClientRect().top;
+                elem.style.cursor = 'grabbing';
+            });
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!draggedElement) return;
+            const container = document.getElementById('slide-container').getBoundingClientRect();
+            
+            // Вычисляем новые координаты относительно контейнера
+            let newLeft = e.clientX - container.left - offsetX;
+            let newTop = e.clientY - container.top - offsetY;
+
+            draggedElement.style.left = newLeft + 'px';
+            draggedElement.style.top = newTop + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (draggedElement) {
+                draggedElement.style.cursor = 'move';
+                draggedElement = null;
+            }
+        });
+
+        // Слушаем нажатие Enter
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const container = document.getElementById('slide-container');
+                const cWidth = container.offsetWidth;
+                const cHeight = container.offsetHeight;
+
+                const clickZone = document.getElementById('click-zone');
+                const videoZone = document.getElementById('video-zone');
+
+                // Переводим пиксели в проценты, чтобы всё корректно работало на любых экранах!
+                const getPercents = (el) => {
+                    return {
+                        left: ((el.offsetLeft / cWidth) * 100).toFixed(2),
+                        top: ((el.offsetTop / cHeight) * 100).toFixed(2),
+                        width: ((el.offsetWidth / cWidth) * 100).toFixed(2),
+                        height: ((el.offsetHeight / cHeight) * 100).toFixed(2)
+                    };
+                };
+
+                let cParams = getPercents(clickZone);
+                let vParams = getPercents(videoZone);
+
+                let finalHtml = `<div style="position: relative; width: 100%; max-width: 1000px;">
+    <img src="ваша_картинка.jpg" style="width: 100%; display: block;">
+    
+    <a href="slide2.html" style="position: absolute; left: ${cParams.left}%; top: ${cParams.top}%; width: ${cParams.width}%; height: ${cParams.height}%; z-index: 10;"></a>
+
+    <video src="1 (2).mp4" controls style="position: absolute; left: ${vParams.left}%; top: ${vParams.top}%; width: ${vParams.width}%; height: ${vParams.height}%; object-fit: cover;"></video>
+</div>`;
+
+                prompt("Готово! Скопируйте этот код и используйте его для финальной версии:", finalHtml);
+            }
+        });
+    </script>
+</body>
+</html>
