@@ -47,8 +47,6 @@
             position: absolute;
             z-index: 10;
             cursor: pointer;
-            /* Если захотите увидеть, где находятся кнопки, уберите слэши и звездочки в строке ниже: */
-            /* background: rgba(255, 0, 0, 0.3); border: 2px solid red; */
         }
     </style>
 </head>
@@ -62,16 +60,16 @@
         </div>
 
         <div id="slide2" class="slide">
-            <img src="f2.jpg" alt="Слайд 2" onerror="this.src='https://via.placeholder.com/1920x1080?text=Картинка+f2.jpg'">
+            <img src="f2.jpg" alt="Слайд 2">
             
-            <video id="vid1" src="1 (2).mp4" controls style="position: absolute; left: 30%; top: 20%; width: 40%; height: 50%; z-index: 5; object-fit: cover; background: #000;"></video>
+            <video id="vid1" src="1 (2).mp4" controls style="position: absolute; left: 13.5%; top: 16%; width: 33.5%; height: 59%; z-index: 5; object-fit: contain; background: transparent;"></video>
             
-            <div class="invisible-btn" onclick="goToSlide(3)" style="left: 75%; top: 80%; width: 20%; height: 10%;"></div>
+            <div class="invisible-btn" onclick="goToSlide(3)" style="left: 39%; top: 85%; width: 22%; height: 10%;"></div>
         </div>
 
         <div id="slide3" class="slide">
             <img src="f3.jpg" alt="Слайд 3" onerror="this.src='https://via.placeholder.com/1920x1080?text=Картинка+f3.jpg'">
-            </div>
+        </div>
 
     </div>
 
