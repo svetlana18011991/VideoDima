@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Презентация для Димы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* ================= БАЗОВЫЕ СТИЛИ ПРЕЗЕНТАЦИИ ================= */
         body { 
             margin: 0; 
             background-color: #000; 
@@ -13,6 +15,7 @@
             align-items: center; 
             height: 100vh; 
             overflow: hidden; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         #presentation-screen { 
@@ -33,7 +36,7 @@
             display: block; 
         }
 
-        .slide img { 
+        .slide > img { 
             width: 100%; 
             height: 100%; 
             display: block; 
@@ -45,18 +48,168 @@
             cursor: pointer;
         }
 
-        /* === СПАСИТЕЛЬНОЕ ПРАВИЛО ДЛЯ ПОЛНОЭКРАННОГО РЕЖИМА === */
-        video:fullscreen {
-            object-fit: contain !important;
-            background-color: #000 !important;
+        video:fullscreen { object-fit: contain !important; background-color: #000 !important; }
+        video:-webkit-full-screen { object-fit: contain !important; background-color: #000 !important; }
+        video:-moz-full-screen { object-fit: contain !important; background-color: #000 !important; }
+
+
+        /* ================= СТИЛИ ДЛЯ ИГРЫ (СЛАЙД 7) ================= */
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-image: url('фон.png');
+            background-size: cover;
+            background-position: center bottom;
+            overflow: hidden;
         }
-        video:-webkit-full-screen {
-            object-fit: contain !important;
-            background-color: #000 !important;
+
+        #tree-wrapper {
+            position: absolute;
+            bottom: 0; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%; 
+            height: 90%; /* Адаптировано под презентацию */
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; 
+            pointer-events: none; 
         }
-        video:-moz-full-screen {
-            object-fit: contain !important;
-            background-color: #000 !important;
+
+        .tree-img {
+            position: absolute;
+            max-width: 90%;
+            max-height: 100%;
+            transition: opacity 1.5s ease-in-out;
+            transform-origin: bottom center;
+            bottom: 5%; 
+        }
+
+        #tree-next {
+            opacity: 0;
+        }
+
+        @keyframes pulseRed {
+            0% { filter: none; transform: translateX(-50%) scale(1); }
+            50% { filter: sepia(1) hue-rotate(-50deg) saturate(5); transform: translateX(-50%) scale(0.98); }
+            100% { filter: none; transform: translateX(-50%) scale(1); }
+        }
+
+        .error-anim {
+            animation: pulseRed 1s ease-in-out;
+        }
+
+        #btn-next {
+            position: absolute;
+            bottom: 2%; 
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 40px;
+            font-size: 28px;
+            font-family: 'Caveat', cursive; 
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(to bottom, #8bc34a, #558b2f); 
+            border: 3px solid #33691e;
+            border-radius: 40px; 
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.4); 
+            transition: all 0.3s;
+            z-index: 10;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+        }
+
+        #btn-next:hover { 
+            background: linear-gradient(to bottom, #9ccc65, #689f38); 
+            transform: translateX(-50%) translateY(-3px); 
+            box-shadow: 0 8px 15px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        
+        #btn-next:active { 
+            transform: translateX(-50%) translateY(2px); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        #question-modal {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-image: url('6.png');
+            background-size: 100% 100%; 
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: transparent; 
+            padding: 85px 90px 80px 90px; 
+            box-sizing: border-box;
+            text-align: center;
+            display: none;
+            z-index: 20;
+            width: 90%; 
+            max-width: 650px; 
+            min-height: 380px; 
+        }
+
+        #question-text {
+            font-size: 22px; 
+            margin-bottom: 25px;
+            color: #3e2723; 
+            font-weight: bold;
+            line-height: 1.3; 
+        }
+
+        .answer-btn {
+            display: block;
+            width: 75%; 
+            margin: 10px auto; 
+            padding: 12px; 
+            font-size: 17px;
+            font-weight: bold;
+            background: #558b2f; 
+            color: white;
+            border: 2px solid #33691e; 
+            border-radius: 12px; 
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
+        }
+
+        .answer-btn:hover { 
+            background: #7cb342; 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+        }
+
+        #final-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            display: none;
+            z-index: 30;
+        }
+
+        #final-text {
+            position: absolute;
+            top: 15%;
+            left: 0;
+            width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            font-size: 60px; 
+            line-height: 1.2;
+            color: #f1c40f;
+            text-shadow: 2px 2px 0 #d35400, -1px -1px 0 #d35400, 1px -1px 0 #d35400, -1px 1px 0 #d35400, 3px 3px 10px rgba(0,0,0,0.5);
+            transform: rotate(-3deg);
+        }
+
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
         }
     </style>
 </head>
@@ -70,56 +223,222 @@
 
         <div id="slide2" class="slide">
             <img src="f2.jpg" alt="Слайд 2">
-            
             <video id="vid1" src="1 (2).mp4" controls style="position: absolute; left: 17.5%; top: 11%; width: 28.5%; height: 69%; z-index: 5; object-fit: cover; border-radius: 4px; background: transparent;"></video>
-            
             <div class="invisible-btn" onclick="goToSlide(3)" style="left: 39%; top: 85%; width: 22%; height: 10%;"></div>
         </div>
 
         <div id="slide3" class="slide">
             <img src="f3.jpg" alt="Слайд 3" onerror="this.src='https://via.placeholder.com/1920x1080?text=Картинка+f3.jpg'">
-            
             <video id="vid2" src="2.mp4" controls style="position: absolute; left: 54%; top: 11%; width: 28.5%; height: 69%; z-index: 5; object-fit: cover; border-radius: 4px; background: transparent;"></video>
-            
             <div class="invisible-btn" onclick="goToSlide(4)" style="left: 39%; top: 85%; width: 22%; height: 10%;"></div>
         </div>
 
         <div id="slide4" class="slide">
             <img src="f4.jpg" alt="Слайд 4" onerror="this.src='https://via.placeholder.com/1920x1080?text=Картинка+f4.jpg'">
-            
             <video id="vid3" src="3.mp4" controls style="position: absolute; left: 17.5%; top: 11%; width: 28.5%; height: 69%; z-index: 5; object-fit: cover; border-radius: 4px; background: transparent;"></video>
-            
             <div class="invisible-btn" onclick="goToSlide(5)" style="left: 39%; top: 85%; width: 22%; height: 10%;"></div>
         </div>
 
         <div id="slide5" class="slide">
             <img src="f5.jpg" alt="Слайд 5" onerror="this.src='https://via.placeholder.com/1920x1080?text=Картинка+f5.jpg'">
-            
             <video id="vid4" src="4.mp4" controls style="position: absolute; left: 54%; top: 11%; width: 28.5%; height: 69%; z-index: 5; object-fit: cover; border-radius: 4px; background: transparent;"></video>
-            
             <div class="invisible-btn" onclick="goToSlide(6)" style="left: 39%; top: 85%; width: 22%; height: 10%;"></div>
         </div>
 
         <div id="slide6" class="slide">
             <img src="f6.jpg" alt="Слайд 6" onerror="this.src='https://via.placeholder.com/1920x1080?text=ФИНАЛ+f6.jpg'">
+            <div class="invisible-btn" onclick="goToSlide(7)" style="left: 39%; top: 85%; width: 22%; height: 10%;"></div>
+        </div>
+
+        <div id="slide7" class="slide">
+            <div id="game-container">
+                <div id="tree-wrapper">
+                    <img id="tree-current" class="tree-img" src="1.png" alt="Сосна">
+                    <img id="tree-next" class="tree-img" src="" alt="Сосна рост">
+                </div>
+
+                <button id="btn-next">Начать рост!</button>
+
+                <div id="question-modal">
+                    <div id="question-text">Вопрос?</div>
+                    <div id="answers-container"></div>
+                </div>
+
+                <div id="final-screen">
+                    <canvas id="fireworks-canvas"></canvas>
+                    <div id="final-text"></div> 
+                </div>
             </div>
+        </div>
 
     </div>
 
     <script>
+        // === ЛОГИКА ПРЕЗЕНТАЦИИ ===
         function goToSlide(slideNumber) {
-            // Прячем все слайды
             document.querySelectorAll('.slide').forEach(slide => {
                 slide.classList.remove('active');
             });
             
-            // Показываем нужный слайд
             document.getElementById('slide' + slideNumber).classList.add('active');
             
-            // Выключаем видео, чтобы звук не шел фоном
             document.querySelectorAll('video').forEach(video => {
                 video.pause();
             });
+        }
+
+        // === ЛОГИКА ИГРЫ ===
+        const questions = [
+            { q: "Что заставляет сосновую шишку закрывать свои чешуйки?", options: ["Холодный ветер", "Повышенная влажность", "Темнота"], correct: 1 },
+            { q: "Зачем шишка плотно закрывается перед дождем?", options: ["Чтобы сохранить свои семена", "Чтобы не замерзнуть", "Чтобы спрятаться от птиц"], correct: 0 },
+            { q: "Как называется наука, которая изучает природу для создания новых технологий?", options: ["Ботаника", "Экология", "Бионика"], correct: 2 },
+            { q: "Сколько лет может прожить сосна?", options: ["Около 10 лет", "От 100 до 600 лет", "Больше 1000 лет"], correct: 1 }
+        ];
+
+        let currentQuestionIndex = 0;
+        let treeStage = 1; 
+        const maxStage = 5;
+        
+        const btnNext = document.getElementById('btn-next');
+        const modal = document.getElementById('question-modal');
+        const questionText = document.getElementById('question-text');
+        const answersContainer = document.getElementById('answers-container');
+        const treeCurrent = document.getElementById('tree-current');
+        const treeNext = document.getElementById('tree-next');
+        const treeWrapper = document.getElementById('tree-wrapper');
+        const finalScreen = document.getElementById('final-screen');
+        const finalTextElement = document.getElementById('final-text');
+
+        const images = [];
+        for (let i = 1; i <= maxStage; i++) {
+            images[i] = new Image();
+            images[i].src = `${i}.png`;
+        }
+
+        btnNext.addEventListener('click', () => {
+            if (currentQuestionIndex < questions.length) {
+                btnNext.textContent = "Далее";
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        function showQuestion(index) {
+            btnNext.style.display = 'none';
+            modal.style.display = 'block';
+            
+            const qData = questions[index];
+            questionText.textContent = qData.q;
+            answersContainer.innerHTML = '';
+
+            qData.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(i, qData.correct);
+                answersContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, correctIndex) {
+            modal.style.display = 'none';
+            
+            if (selectedIndex === correctIndex) {
+                if (treeStage < maxStage) {
+                    treeStage++;
+                }
+                growTree(treeStage);
+            } else {
+                treeWrapper.classList.remove('error-anim');
+                void treeWrapper.offsetWidth; 
+                treeWrapper.classList.add('error-anim');
+                
+                setTimeout(() => {
+                    proceedToNextStep();
+                }, 1000);
+            }
+        }
+
+        function growTree(newStage) {
+            treeNext.src = images[newStage].src;
+            treeNext.style.opacity = 1;
+
+            setTimeout(() => {
+                treeCurrent.src = treeNext.src;
+                treeNext.style.opacity = 0; 
+                proceedToNextStep();
+            }, 1500); 
+        }
+
+        function proceedToNextStep() {
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                btnNext.style.display = 'block';
+            } else {
+                btnNext.style.display = 'none';
+                showVictory();
+            }
+        }
+
+        function showVictory() {
+            if (treeStage === 5) {
+                finalTextElement.textContent = "Отлично!";
+            } else if (treeStage === 4) {
+                finalTextElement.textContent = "Молодец! Сосна подросла!";
+            } else if (treeStage === 3) {
+                finalTextElement.textContent = "Хорошее начало!";
+            } else if (treeStage === 2) {
+                finalTextElement.textContent = "Нужно еще немного постараться!";
+            } else {
+                finalTextElement.textContent = "Не сдавайся, изучай природу!";
+            }
+
+            finalScreen.style.display = 'block';
+            const canvas = document.getElementById('fireworks-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Адаптируем холст для салюта под размер экрана игры
+            const container = document.getElementById('game-container');
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+
+            let particles = [];
+            let startX = canvas.width * 0.5; 
+            let startY = canvas.height * 0.5;
+
+            for (let i = 0; i < 120; i++) {
+                particles.push({
+                    x: startX,
+                    y: startY,
+                    vx: (Math.random() - 0.5) * 18,
+                    vy: (Math.random() - 0.5) * 18,
+                    color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+                    life: 1
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p, index) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.25; 
+                    p.life -= 0.015;
+                    
+                    ctx.globalAlpha = Math.max(0, p.life);
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (p.life <= 0) particles.splice(index, 1);
+                });
+                
+                if (particles.length > 0) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            animate();
         }
     </script>
 </body>
